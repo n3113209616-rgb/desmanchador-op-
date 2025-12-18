@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -56,6 +58,7 @@ header p {
     padding: 20px;
     border-radius: 12px;
     margin: 20px 0;
+    border: 1px solid #333;
 }
 
 .benefits h2 {
@@ -72,18 +75,84 @@ header p {
     padding: 8px 0;
 }
 
+/* SECCIÓN CALCULADORA */
+.calculator-box {
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 20px 0;
+    text-align: center;
+    border: 2px solid #ff00ff;
+}
+
+.calculator-box h2 {
+    color: #ff00ff;
+    margin-top: 0;
+}
+
+.calc-input-group {
+    margin: 20px 0;
+}
+
+input[type="number"] {
+    background: #333;
+    color: white;
+    border: 1px solid #00ffff;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 8px;
+    width: 80px;
+    text-align: center;
+}
+
+.total-display {
+    font-size: 24px;
+    margin: 15px 0;
+}
+
+.total-price {
+    color: #00ffff;
+    font-weight: bold;
+    font-size: 32px;
+}
+
+/* SECCIÓN NEQUI */
+.nequi-info {
+    background: #f0f0f0;
+    color: #111;
+    padding: 15px;
+    border-radius: 12px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.nequi-logo {
+    color: #633091;
+    font-weight: bold;
+    font-size: 18px;
+}
+
 /* BOTÓN WHATSAPP */
 .whatsapp {
     display: block;
     text-align: center;
     background: #25D366;
     color: white;
-    padding: 15px;
+    padding: 18px;
     font-size: 18px;
     font-weight: bold;
     border-radius: 12px;
     text-decoration: none;
     margin: 20px 0;
+    transition: 0.3s;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.whatsapp:hover {
+    transform: scale(1.02);
+    filter: brightness(1.1);
 }
 
 /* PIE DE PÁGINA */
@@ -125,11 +194,26 @@ footer {
         </ul>
     </div>
 
-    <a class="whatsapp"
-       href="https://wa.me/573113209616?text=Hola,%20quiero%20información%20sobre%20el%20Desmanchador%20Profesional"
-       target="_blank">
-       💬 Escríbenos por WhatsApp
-    </a>
+    <div class="calculator-box">
+        <h2>Realiza tu Pedido</h2>
+        <div class="calc-input-group">
+            <label style="display: block; margin-bottom: 10px;">Cantidad de unidades:</label>
+            <input type="number" id="cantidad" value="1" min="1" oninput="calcularTotal()">
+        </div>
+        
+        <div class="total-display">
+            Total: <span class="total-price">$<span id="total-val">12.000</span></span>
+        </div>
+
+        <div class="nequi-info">
+            Paga seguro por <span class="nequi-logo">Nequi</span> al número:<br>
+            <strong>311 320 9616</strong>
+        </div>
+
+        <button class="whatsapp" onclick="enviarPedido()">
+            💬 Pedir por WhatsApp
+        </button>
+    </div>
 
 </div>
 
@@ -142,6 +226,33 @@ footer {
         ✉️ n3113209616@gmail.com
     </p>
 </footer>
+
+<script>
+    const PRECIO_UNITARIO = 12000;
+
+    function calcularTotal() {
+        const input = document.getElementById('cantidad');
+        let cant = parseInt(input.value);
+        
+        if (isNaN(cant) || cant < 1) {
+            cant = 0;
+        }
+        
+        const total = cant * PRECIO_UNITARIO;
+        // Formatear con puntos de miles
+        document.getElementById('total-val').innerText = total.toLocaleString('es-CO');
+    }
+
+    function enviarPedido() {
+        const cant = document.getElementById('cantidad').value;
+        const total = (cant * PRECIO_UNITARIO).toLocaleString('es-CO');
+        
+        const mensaje = `Hola Químicos OP! Quiero comprar ${cant} unidad(es) del Desmanchador Profesional. El total es $${total}. ¿Me confirman el pedido para realizar el pago por Nequi?`;
+        
+        const url = `https://wa.me/573113209616?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+    }
+</script>
 
 </body>
 </html>
